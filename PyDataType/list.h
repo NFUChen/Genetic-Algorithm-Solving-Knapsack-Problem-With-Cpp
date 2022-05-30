@@ -12,8 +12,6 @@
 #include "dictionary.h"
 #include "set.h"
 
-static int copied_time = 0;
-
 template <class T>
 class List
 {
@@ -22,6 +20,7 @@ private:
 
     void __throw_out_of_range_error__(const std::vector<T> &vector, const int &idx) const
     {
+
         if (idx > vector.size() - 1)
         {
             throw std::out_of_range("List index out of bound");

@@ -26,11 +26,11 @@ public:
       m_set.insert(value);
     }
   }
-  Set(const std::set<T> set)
+  Set(const std::set<T> &set)
       : m_set(set)
   {
   }
-  Set(const std::initializer_list<T> init)
+  Set(const std::initializer_list<T> &init)
       : m_set(init)
   {
   }
@@ -48,17 +48,17 @@ public:
     return copy_set;
   }
 
-  bool is_contains(T value) const
+  bool is_contains(const T &value) const
   {
     return (m_set.find(value) != m_set.end());
   }
 
-  void add(T value)
+  void add(const T &value)
   {
     m_set.insert(value);
   }
 
-  void remove(T value)
+  void remove(const T &value)
   {
     if (!this->is_contains(value)) // not found
     {
@@ -69,7 +69,7 @@ public:
     m_set.erase(value);
   }
 
-  void discard(T value)
+  void discard(const T &value)
   {
     m_set.erase(value);
   }
@@ -79,7 +79,7 @@ public:
     m_set.clear();
   }
 
-  void update(Set<T> _other_set)
+  void update(const Set<T> &_other_set)
   // The update() method updates the current set, by adding items from another set (or any other iterable).
   // If an item is present in both sets,
   // only one appearance of this item will be present in the updated set.
