@@ -12,13 +12,15 @@
 #include "dictionary.h"
 #include "set.h"
 
+static int copied_time = 0;
+
 template <class T>
 class List
 {
 private:
     std::vector<T> m_vector;
 
-    void __throw_out_of_range_error__(std::vector<T> vector, int idx) const
+    void __throw_out_of_range_error__(const std::vector<T> &vector, const int &idx) const
     {
         if (idx > vector.size() - 1)
         {
@@ -68,7 +70,7 @@ public:
         : m_vector(vector)
     {
     }
-    List(const std::set<T> set)
+    List(const std::set<T> &set)
     {
         for (const T &value : set)
         {
@@ -154,7 +156,7 @@ public:
         }
     }
 
-    int index(T searched_value, int start = -1, int end = -1) const
+    int index(const T &searched_value, int start = -1, int end = -1) const
     {
 
         if (start == -1)
@@ -227,7 +229,7 @@ public:
         return string_list;
     }
 
-    std::string join(std::string delimeter) const
+    std::string join(const std::string &delimeter) const
     {
         static_assert(std::is_arithmetic_v<T>, "Integral or floating types required");
         std::string repr_ = "";
@@ -273,7 +275,7 @@ public:
         std::reverse(m_vector.begin(), m_vector.end());
     }
 
-    int count(T value) const
+    int count(const T &value) const
     {
         long int count = 0;
         for (const T &val : m_vector)

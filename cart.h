@@ -9,6 +9,8 @@
 class Cart
 {
 private:
+    double mutable m_fitness = -1.0;
+
     List<int> m_chromosome;
     List<int> initialize_chromosome()
     {
@@ -29,14 +31,14 @@ private:
 
         return chromosome;
     }
-    Cart create_next_generation_child_with_new_chromose(List<int> new_chromosome)
+    Cart create_next_generation_child_with_new_chromose(const List<int> &new_chromosome)
     {
         Cart next_generate_child(m_products, m_space_limit, m_generation + 1);
         next_generate_child.set_chromosome(new_chromosome);
 
         return next_generate_child;
     }
-    void set_chromosome(List<int> new_chromosome)
+    void set_chromosome(const List<int> &new_chromosome)
     {
         m_chromosome = new_chromosome;
     }
@@ -60,13 +62,13 @@ public:
     Cart()
     {
     }
-    Cart(List<Product> products, double space_limit, int generation = 0)
+    Cart(const List<Product> &products, double space_limit, int generation = 0)
         : m_products(products), m_space_limit(space_limit), m_generation(generation)
     {
         m_chromosome = initialize_chromosome();
+        update_fitness();
     }
-
-    double fitness() const
+    void update_fitness() const
     {
         double total_space_used = 0.0;
         double total_score = 0.0;
@@ -78,15 +80,20 @@ public:
             if (gene == 1)
             {
                 total_space_used += current_product.m_space;
+                if (total_space_used > m_space_limit)
+                {
+                    m_fitness = 0.0;
+                    return;
+                }
                 total_score += current_product.m_price;
             }
         }
-        if (total_space_used > m_space_limit)
-        {
-            return 0.0;
-        }
+        m_fitness = total_score;
+    }
 
-        return total_score;
+    double fitness() const
+    {
+        return m_fitness;
     }
     List<Product> selected_products()
     {
@@ -104,7 +111,7 @@ public:
         return selected_products_list;
     };
 
-    List<Cart> crossover(Cart _other_cart)
+    List<Cart> crossover(const Cart &_other_cart)
     {
         assert(m_chromosome.length() != 0);
         assert(_other_cart.m_chromosome.length() != 0);
@@ -137,6 +144,7 @@ public:
             {
                 mutate_a_gene_in_chromosome(idx);
             }
+            update_fitness();
         }
 
         return *this;

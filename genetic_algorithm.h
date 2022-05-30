@@ -22,7 +22,7 @@ private:
     {
         while (m_current_population.length() < m_population_size)
         {
-            Cart one_solution = Cart(m_available_products, m_space_limit);
+            Cart one_solution(m_available_products, m_space_limit);
             m_current_population.append(one_solution);
         }
         m_current_population.sort();
@@ -97,11 +97,7 @@ private:
 
     void visualize_current_generation()
     {
-        std::cout << "Generation: " << m_current_generation << "\n"
-                  << m_current_population << "\n"
-                  << "Best Solution: "
-                  << "\n"
-                  << m_current_best_solution << "\n";
+        std::cout << "Generation: " << m_current_generation << "\n";
     }
 
 public:
@@ -115,7 +111,7 @@ public:
     int m_current_generation = 0;
     Cart m_current_best_solution;
     Cart m_global_best_solution;
-    GeneticAlgorithm(int population_size, double mutation_prob, int number_of_generation, List<Product> available_products, double space_limit)
+    GeneticAlgorithm(int population_size, double mutation_prob, int number_of_generation, const List<Product> &available_products, double space_limit)
         : m_population_size(population_size),
           m_mutation_prob(mutation_prob),
           m_number_of_generation(number_of_generation),
