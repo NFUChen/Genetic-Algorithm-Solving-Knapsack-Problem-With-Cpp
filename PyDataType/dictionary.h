@@ -20,8 +20,7 @@ private:
     {
         if (!m_map.count(key))
         {
-            std::string error_msg = std::to_string(key) + " not in Dict";
-            throw std::invalid_argument(error_msg);
+            throw std::invalid_argument("Key not in Dict");
         }
     }
 
@@ -30,7 +29,7 @@ public:
     Dict()
     {
     }
-    Dict(const std::initializer_list<std::pair<const K, V>> init)
+    Dict(const std::initializer_list<std::pair<const K, V> > &init)
         : m_map(init)
     {
     }
@@ -72,7 +71,7 @@ public:
 
         return popped_value;
     }
-    V pop(const K &key, V default_value)
+    V pop(const K &key, const V &default_value)
     {
 
         if (!m_map.count(key))
@@ -81,7 +80,7 @@ public:
         }
     }
 
-    void update(Dict<K, V> _other_dict)
+    void update(const Dict<K, V> &_other_dict)
     {
         for (const auto &[key, value] : _other_dict.items())
         {
@@ -178,7 +177,7 @@ public:
         return key_vector;
     }
 
-    std::unordered_map<K, V> items() const // for iteration
+    const std::unordered_map<K, V> &items() const // for iteration
     {
         return m_map;
     }
